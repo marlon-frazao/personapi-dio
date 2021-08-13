@@ -1,6 +1,7 @@
 package com.digitalinnovationone.personapidio.dto.request;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -34,7 +35,7 @@ public class PersonDTO implements Serializable {
 	
 	@Valid
     @NotEmpty
-	private List<PhoneDTO> phones;
+	private List<PhoneDTO> phones = new ArrayList<>();
 	
 	public PersonDTO() {}
 
