@@ -10,6 +10,9 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.br.CPF;
 
+import com.digitalinnovationone.personapidio.entities.Person;
+import com.digitalinnovationone.personapidio.entities.Phone;
+
 
 public class PersonDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -35,12 +38,23 @@ public class PersonDTO implements Serializable {
 	
 	public PersonDTO() {}
 
-	public PersonDTO(String firstName, String lastName, String cpf, String birthDate, List<PhoneDTO> phones) {
+	public PersonDTO(String firstName, String lastName, String cpf, String birthDate) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.cpf = cpf;
 		this.birthDate = birthDate;
-		this.phones = phones;
+	}
+	
+	public PersonDTO(Person entity) {
+		firstName = entity.getFirstName();
+		lastName = entity.getLastName();
+		cpf = entity.getCpf();
+		birthDate = entity.getBithDate().toString();
+	}
+	
+	public PersonDTO(Person entity, List<Phone> phones) {
+		this(entity);
+		phones.forEach(phone -> this.phones.add(phone.toDTO()));
 	}
 
 	public String getFirstName() {
@@ -77,5 +91,9 @@ public class PersonDTO implements Serializable {
 
 	public List<PhoneDTO> getPhones() {
 		return phones;
+	}
+	
+	public Person toEntity() {
+		return new Person(this, phones);
 	}
 }

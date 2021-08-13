@@ -14,6 +14,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.digitalinnovationone.personapidio.dto.request.PersonDTO;
+import com.digitalinnovationone.personapidio.dto.request.PhoneDTO;
+
 @Entity
 @Table(name = "tb_person")
 public class Person {
@@ -43,6 +46,18 @@ public class Person {
 		this.lastName = lastName;
 		this.cpf = cpf;
 		this.bithDate = bithDate;
+	}
+	
+	public Person(PersonDTO dto) {
+		firstName = dto.getFirstName();
+		lastName = dto.getLastName();
+		cpf = dto.getCpf();
+		bithDate = LocalDate.parse(dto.getBirthDate());
+	}
+	
+	public Person(PersonDTO dto, List<PhoneDTO> phones) {
+		this(dto);
+		phones.forEach(phone -> this.phones.add(phone.toEntity()));
 	}
 
 	public Long getId() {
@@ -87,5 +102,34 @@ public class Person {
 
 	public List<Phone> getPhones() {
 		return phones;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Person other = (Person) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+	
+	public PersonDTO toDTO() {
+		return new PersonDTO(this, phones);
 	}
 }

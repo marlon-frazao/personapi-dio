@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.digitalinnovationone.personapidio.dto.request.PhoneDTO;
 import com.digitalinnovationone.personapidio.entities.enums.PhoneType;
 
 @Entity
@@ -32,6 +33,12 @@ public class Phone implements Serializable {
 		this.id = id;
 		this.type = type;
 		this.number = number;
+	}
+	
+	public Phone(PhoneDTO dto) {
+		id = dto.getId();
+		type = dto.getType();
+		number = dto.getNumber();
 	}
 
 	public Long getId() {
@@ -81,5 +88,9 @@ public class Phone implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+	
+	public PhoneDTO toDTO() {
+		return new PhoneDTO(this);
 	}
 }

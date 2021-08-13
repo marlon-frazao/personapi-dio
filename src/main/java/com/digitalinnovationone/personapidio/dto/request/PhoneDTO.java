@@ -3,6 +3,7 @@ package com.digitalinnovationone.personapidio.dto.request;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+import com.digitalinnovationone.personapidio.entities.Phone;
 import com.digitalinnovationone.personapidio.entities.enums.PhoneType;
 
 public class PhoneDTO {
@@ -21,6 +22,12 @@ public class PhoneDTO {
 		this.id = id;
 		this.type = type;
 		this.number = number;
+	}
+	
+	public PhoneDTO(Phone entity) {
+		id = entity.getId();
+		type = entity.getType();
+		number = entity.getNumber();
 	}
 
 	public Long getId() {
@@ -45,5 +52,9 @@ public class PhoneDTO {
 
 	public void setNumber(String number) {
 		this.number = number;
+	}
+	
+	public Phone toEntity() {
+		return new Phone(this);
 	}
 }
